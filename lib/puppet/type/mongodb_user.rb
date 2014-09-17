@@ -45,10 +45,10 @@ Puppet::Type.newtype(:mongodb_user) do
     end
   end
 
-  newproperty(:password_hash) do
-    desc "The password hash of the user. Use mongodb_password() for creating hash."
+  newproperty(:password) do
+    desc "The password of the user."
     defaultto do
-      fail("Property 'password_hash' must be set. Use mongodb_password() for creating hash.")
+      fail("Property 'password' must be set.")
     end
     newvalue(/^\w+$/)
   end

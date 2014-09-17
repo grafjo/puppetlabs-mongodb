@@ -30,12 +30,6 @@ describe 'mongodb::db', :type => :define do
       .with_roles(["testrole1", "testrole2"])
   end
 
-  it 'should prefer password_hash instead of password' do
-    params.merge!({'password_hash' => 'securehash'})
-    should contain_mongodb_user('testuser')\
-      .with_password_hash('securehash')
-  end
-
   it 'should contain mongodb_database with proper tries param' do
     params.merge!({'tries' => 5})
     should contain_mongodb_database('testdb').with_tries(5)

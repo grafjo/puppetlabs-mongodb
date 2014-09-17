@@ -3,12 +3,12 @@ require 'spec_helper'
 describe Puppet::Type.type(:mongodb_user).provider(:mongodb) do
 
   let(:resource) { Puppet::Type.type(:mongodb_user).new(
-    { :ensure        => :present,
-      :name          => 'new_user',
-      :database      => 'new_database',
-      :password_hash => 'pass',
-      :roles         => ['role1', 'role2'],
-      :provider      => described_class.name
+    { :ensure   => :present,
+      :name     => 'new_user',
+      :database => 'new_database',
+      :password => 'pass',
+      :roles    => ['role1', 'role2'],
+      :provider => described_class.name
     }
   )}
 
@@ -35,17 +35,17 @@ describe Puppet::Type.type(:mongodb_user).provider(:mongodb) do
     end
   end
 
-  describe 'password_hash' do
-    it 'returns a password_hash' do
+  describe 'password' do
+    it 'returns a password' do
       provider.expects(:mongo).returns("pass\n")
-      provider.password_hash.should == "pass"
+      provider.password.should == "pass"
     end
   end
 
-  describe 'password_hash=' do
-    it 'changes a password_hash' do
+  describe 'password=' do
+    it 'changes a password' do
       provider.expects(:mongo)
-      provider.password_hash=("newpass")
+      provider.password=("newpass")
     end
   end
 

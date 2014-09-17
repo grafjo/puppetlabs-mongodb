@@ -101,12 +101,10 @@ class {'::mongodb::server':
 }
 
 mongodb::db { 'testdb':
-  user          => 'user1',
-  password_hash => 'a15fbfca5e3a758be80ceaf42458bcd8',
+  user     => 'user1',
+  password => 'pass1',
 }
 ```
-Parameter 'password_hash' is hex encoded md5 hash of "user1:mongo:pass1".
-Unsafe plain text password could be used with 'password' parameter instead of 'password_hash'.
 
 ## Reference
 
@@ -380,12 +378,8 @@ Creates database with user. Resource title used as database name.
 #####`user`
 Name of the user for database
 
-#####`password_hash`
-Hex encoded md5 hash of "$username:mongo:$password".
-For more information please refer to [MongoDB Authentication Process](http://docs.mongodb.org/meta-driver/latest/legacy/implement-authentication-in-driver/#authentication-process).
-
 #####`password`
-Plain-text user password (will be hashed)
+Plain-text user password
 
 #####`roles`
 Array with user roles. Default: ['dbAdmin']
@@ -411,16 +405,16 @@ The maximum amount of two second tries to wait MongoDB startup. Default: 10
 
 ```puppet
 mongodb_user { testuser:
-  ensure        => present,
-  password_hash => mongodb_password('testuser', 'p@ssw0rd'),
-  database      => testdb,
-  roles         => ['readWrite', 'dbAdmin'],
-  tries         => 10,
-  require       => Class['mongodb::server'],
+  ensure   => present,
+  password => 'p@ssw0rd',
+  database => testdb,
+  roles    => ['readWrite', 'dbAdmin'],
+  tries    => 10,
+  require  => Class['mongodb::server'],
 }
 ```
-#####`password_hash`
-Hex encoded md5 hash of "$username:mongo:$password".
+#####`password`
+The user password.
 
 #####`database`
 Name of database. It will be created, if not exists.

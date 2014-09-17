@@ -17,7 +17,7 @@ Puppet::Type.type(:mongodb_user).provide(:mongodb) do
   end
 
   def create
-    mongo(@resource[:database], '--eval', "db.system.users.insert({user:\"#{@resource[:name]}\", pwd:\"#{@resource[:password_hash]}\", roles: #{@resource[:roles].inspect}})")
+    mongo(@resource[:database], '--eval', "db.createUser({user:\"#{@resource[:name]}\", pwd:\"#{@resource[:password]}\", roles: #{@resource[:roles].inspect}})")
   end
 
   def destroy
@@ -29,12 +29,12 @@ Puppet::Type.type(:mongodb_user).provide(:mongodb) do
     mongo(@resource[:database], '--quiet', '--eval', "db.system.users.find({user:\"#{@resource[:name]}\"}).count()").strip.eql?('1')
   end
 
-  def password_hash
+  def password
     mongo(@resource[:database], '--quiet', '--eval', "db.system.users.findOne({user:\"#{@resource[:name]}\"})[\"pwd\"]").strip
   end
 
-  def password_hash=(value)
-    mongo(@resource[:database], '--quiet', '--eval', "db.system.users.update({user:\"#{@resource[:name]}\"}, { $set: {pwd:\"#{value}\"}})")
+  def password=(value)
+    mongo(@resource[:database], '--quiet', '--eval', "db.changeUserPassword(\"#{@resource[:name]}\", \"#{value}\")")
   end
 
   def roles
